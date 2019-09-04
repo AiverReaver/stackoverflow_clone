@@ -11,6 +11,11 @@ class Answer extends Model
         $this->belongsTo(User::class);
     }
 
+    public function post()
+    {
+        $this->belongsTo(Post::class);
+    }
+
     public function comments()
     {
         $this->morphMany(Comment::class, 'commentable');

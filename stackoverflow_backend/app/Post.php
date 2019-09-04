@@ -14,6 +14,11 @@ class Post extends Model
         $this->belongsTo(User::class);
     }
 
+    public function posts()
+    {
+        $this->hasMany(Answer::class);
+    }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class)->withTimestamps();
