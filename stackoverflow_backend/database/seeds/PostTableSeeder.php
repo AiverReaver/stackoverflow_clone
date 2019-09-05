@@ -11,6 +11,10 @@ class PostTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Post::class, 30)->create();
+
+        factory(App\Post::class, 50)->create()->each(function ($post) {
+            $tags = App\Tag::all()->random(rand(2, 5));
+            $post->addTagsToPost($tags);
+        });
     }
 }

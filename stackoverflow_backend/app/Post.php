@@ -14,7 +14,7 @@ class Post extends Model
         $this->belongsTo(User::class);
     }
 
-    public function posts()
+    public function answers()
     {
         $this->hasMany(Answer::class);
     }
@@ -28,6 +28,7 @@ class Post extends Model
     {
         $this->morphMany(Comment::class, 'commentable');
     }
+
 
     // public function createTags($tags)
     // {

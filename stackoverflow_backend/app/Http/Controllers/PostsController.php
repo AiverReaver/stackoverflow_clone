@@ -29,7 +29,6 @@ class PostsController extends Controller
         if ($tags = request('tags')) {
             $tags = Tag::whereIn('name', $tags)->get();
             $post->addTagsToPost($tags);
-            // $post->createTags($tags);
         }
 
         return new PostResource($post);
