@@ -1,6 +1,5 @@
 import React from 'react';
 
-import stackover from './api';
 import Posts from './components/PostsList/PostsList';
 
 function App() {

@@ -1,7 +1,11 @@
 import React from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
 
 import PostItem from '../PostItem/PostItem';
+import {
+    fetchposts,
+    fecthPostDetailsWithAnswerAndCommnets
+} from '../../actions';
 
 class PostsList extends React.Component {
     state = { posts: [] };
@@ -11,31 +15,29 @@ class PostsList extends React.Component {
     }
 
     componentDidMount() {
-        this.getPosts();
+        this.props.fetchposts();
+        this.props.fecthPostDetailsWithAnswerAndCommnets(1);
     }
 
-    getPosts = () => {
-        axios
-            .get('http://localhost:8000/api/posts/')
-            .then(posts => {
-                this.setState({ posts: posts.data.data });
-            })
-            .catch(err => {
-                console.error(err);
-            });
-    };
-
     render = () => {
-        const postItem = this.state.posts.map(post => {
-            return (
-                <div key={post.id}>
-                    <PostItem post={post} />
-                </div>
-            );
-        });
+        // const postItem = this.state.posts.map(post => {
+        //     return (
+        //         <div key={post.id}>
+        //             <PostItem post={post} />
+        //         </div>
+        //     );
+        // });
 
-        return <div> {postItem}</div>;
+        return <div> hello</div>;
     };
 }
 
-export default PostsList;
+const mapStateToProps = ({ postsReducer }) => {
+    console.log(postsReducer);
+    return { posts: postsReducer.posts, postDetail: postsReducer.postDetail };
+};
+
+export default connect(
+    mapStateToProps,
+    { fetchposts, fecthPostDetailsWithAnswerAndCommnets }
+)(PostsList);
