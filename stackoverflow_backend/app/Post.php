@@ -11,12 +11,12 @@ class Post extends Model
 
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function answers()
     {
-        $this->hasMany(Answer::class);
+        return $this->hasMany(Answer::class);
     }
 
     public function tags()
@@ -26,7 +26,7 @@ class Post extends Model
 
     public function comments()
     {
-        $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
 
