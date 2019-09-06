@@ -1,17 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Item } from 'semantic-ui-react';
 
 import PostItem from '../PostItem/PostItem';
-import { fetchposts, fecthPostDetails } from '../../actions';
+import { fetchposts } from '../../actions';
 
 class PostsList extends React.Component {
-    constructor(props) {
-        super();
-    }
-
     componentDidMount() {
         this.props.fetchposts();
-        this.props.fecthPostDetails(1);
     }
 
     render = () => {
@@ -19,28 +15,23 @@ class PostsList extends React.Component {
 
         if (posts !== undefined) {
             const postItem = posts.data.map(post => {
-                return (
-                    <div key={post.id}>
-                        <PostItem post={post} />
-                    </div>
-                );
+                return <PostItem key={post.id} post={post} />;
             });
-            return <div>{postItem}</div>;
+            return <Item.Group>{postItem}</Item.Group>;
         }
 
-        return <div>no post</div>;
+        return <div>no questions</div>;
     };
 }
 
 const mapStateToProps = ({ postsReducer }) => {
     console.log(postsReducer);
     return {
-        posts: postsReducer.posts,
-        postDetail: postsReducer.postDetail
+        posts: postsReducer.posts
     };
 };
 
 export default connect(
     mapStateToProps,
-    { fetchposts, fecthPostDetails }
+    { fetchposts }
 )(PostsList);
