@@ -16,7 +16,8 @@ class User extends JsonResource
     {
         return [
             'name' => $this->name,
-            'email' => $this->email
+            'email' => $this->email,
+            'posts' => Post::collection($this->whenLoaded('posts'))
         ];
     }
 }

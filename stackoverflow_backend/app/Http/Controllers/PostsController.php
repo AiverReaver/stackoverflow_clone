@@ -18,7 +18,7 @@ class PostsController extends Controller
 
     public function show(Post $post)
     {
-
+        $post = $post->load(['comments', 'answers']);
         return new PostResource($post);
     }
 

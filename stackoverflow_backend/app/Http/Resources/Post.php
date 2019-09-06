@@ -19,7 +19,10 @@ class Post extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
+            'tags' => Tag::collection($this->tags),
+            'comments' => Comment::collection($this->whenLoaded('comments')),
+            'answers' => Answer::collection($this->whenLoaded('answers'))
         ];
     }
 }

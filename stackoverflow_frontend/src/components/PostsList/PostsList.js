@@ -2,42 +2,45 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import PostItem from '../PostItem/PostItem';
-import {
-    fetchposts,
-    fecthPostDetailsWithAnswerAndCommnets
-} from '../../actions';
+import { fetchposts, fecthPostDetails } from '../../actions';
 
 class PostsList extends React.Component {
-    state = { posts: [] };
-
     constructor(props) {
         super();
     }
 
     componentDidMount() {
         this.props.fetchposts();
-        this.props.fecthPostDetailsWithAnswerAndCommnets(1);
+        this.props.fecthPostDetails(1);
     }
 
     render = () => {
-        // const postItem = this.state.posts.map(post => {
-        //     return (
-        //         <div key={post.id}>
-        //             <PostItem post={post} />
-        //         </div>
-        //     );
-        // });
+        const { posts } = this.props;
 
-        return <div> hello</div>;
+        if (posts !== undefined) {
+            const postItem = posts.data.map(post => {
+                return (
+                    <div key={post.id}>
+                        <PostItem post={post} />
+                    </div>
+                );
+            });
+            return <div>{postItem}</div>;
+        }
+
+        return <div>no post</div>;
     };
 }
 
 const mapStateToProps = ({ postsReducer }) => {
     console.log(postsReducer);
-    return { posts: postsReducer.posts, postDetail: postsReducer.postDetail };
+    return {
+        posts: postsReducer.posts,
+        postDetail: postsReducer.postDetail
+    };
 };
 
 export default connect(
     mapStateToProps,
-    { fetchposts, fecthPostDetailsWithAnswerAndCommnets }
+    { fetchposts, fecthPostDetails }
 )(PostsList);

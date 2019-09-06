@@ -1,11 +1,17 @@
 import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 
-import Posts from './components/PostsList/PostsList';
+import PostsList from './components/PostsList/PostsList';
+import Navbar from './components/Navbar/Navbar';
 
 function App() {
     return (
         <div>
-            <Posts />
+            <Navbar />
+
+            <BrowserRouter>
+                <Route path="/" exact component={PostsList} />
+            </BrowserRouter>
         </div>
     );
 }
