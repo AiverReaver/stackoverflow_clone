@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Item } from 'semantic-ui-react';
+import { Item, Loader, Pagination } from 'semantic-ui-react';
 
 import PostItem from '../PostItem/PostItem';
 import { fetchposts } from '../../actions';
@@ -9,6 +9,9 @@ class PostsList extends React.Component {
     componentDidMount() {
         this.props.fetchposts();
     }
+    handlePaginationChange = (e, { activePage }) => {
+        this.props.fetchposts(activePage);
+    };
 
     render = () => {
         const { posts } = this.props;
@@ -17,10 +20,21 @@ class PostsList extends React.Component {
             const postItem = posts.data.map(post => {
                 return <PostItem key={post.id} post={post} />;
             });
-            return <Item.Group>{postItem}</Item.Group>;
+            return (
+                <div>
+                    <Pagination
+                        boundaryRange={0}
+                        defaultActivePage={posts.meta.current_page}
+                        siblingRange={2}
+                        onPageChange={this.handlePaginationChange}
+                        totalPages={posts.meta.last_page}
+                    />
+                    <Item.Group divided>{postItem}</Item.Group>
+                </div>
+            );
         }
 
-        return <div>no questions</div>;
+        return <Loader active>Loading</Loader>;
     };
 }
 

@@ -5,33 +5,30 @@ import { Item, Label } from 'semantic-ui-react';
 class PostItem extends React.Component {
     componentDidMount() {}
 
-    render = () => {
+    render() {
+        const { post } = this.props;
+
+        const tags = post.tags.map((tag, index) => {
+            return <Label key={index}>{tag.name}</Label>;
+        });
+
         return (
             <Item>
                 <Item.Content>
                     <Item.Header>
-                        <Link to={`questions/${this.props.post.id}`}>
-                            {this.props.post.title}
-                        </Link>
+                        <Link to={`questions/${post.id}`}>{post.title}</Link>
                     </Item.Header>
                     <Item.Meta>vote view answer</Item.Meta>
-                    <Item.Description>
-                        {this.props.post.description}
-                    </Item.Description>
                     <Item.Extra>
-                        <p class="ui primary right floated ">
-                            Buy tickets
-                            <i
-                                aria-hidden="true"
-                                class="right chevron icon"
-                            ></i>
+                        <p className="ui primary right floated ">
+                            user added date and name
                         </p>
-                        <Label>IMAX</Label>
+                        {tags}
                     </Item.Extra>
                 </Item.Content>
             </Item>
         );
-    };
+    }
 }
 
 export default PostItem;

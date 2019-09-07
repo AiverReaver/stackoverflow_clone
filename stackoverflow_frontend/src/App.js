@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { Container } from 'semantic-ui-react';
 
 import PostsList from './components/PostsList/PostsList';
 import Navbar from './components/Navbar/Navbar';
@@ -10,8 +11,10 @@ function App() {
         <div>
             <BrowserRouter>
                 <Navbar />
-                <Route path="/" exact component={PostsList} />
-                <Route path="/questions/:id" exact component={PostDetail} />
+                <Container>
+                    <Route path="/" exact component={PostsList} />
+                    <Route path="/questions/:id" exact component={PostDetail} />
+                </Container>
             </BrowserRouter>
         </div>
     );

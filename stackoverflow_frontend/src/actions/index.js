@@ -1,7 +1,7 @@
 import stackoverflow from '../api';
 
-export const fetchposts = () => async dispatch => {
-    const res = await stackoverflow.get('/posts');
+export const fetchposts = pageNum => async dispatch => {
+    const res = await stackoverflow.get(`/posts?page=${pageNum}`);
 
     dispatch({
         type: 'FETCH_POSTS',
