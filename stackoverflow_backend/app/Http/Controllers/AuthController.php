@@ -7,12 +7,24 @@ use App\User;
 
 class AuthController extends Controller
 {
+    public function register(Request $request)
+    {
+        $user = User::create([
+            'email' => $request->email,
+            'name' => $request->name,
+            'password' => $request->password,
+        ]);
+
+        $token = auth()->login($user);
+
+        return $this->respondWithToken($token);
+    }
 
     public function login()
     {
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 

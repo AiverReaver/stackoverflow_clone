@@ -39,7 +39,6 @@ class PostsList extends React.Component {
 }
 
 const mapStateToProps = ({ postsReducer }) => {
-    console.log(postsReducer);
     return {
         posts: postsReducer.posts
     };
