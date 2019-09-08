@@ -9,6 +9,12 @@ use App\Tag;
 
 class PostsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except(['index', 'show']);
+    }
+
     public function index()
     {
         $posts = Post::select('title', 'created_at', 'user_id', 'id')->paginate(15);
