@@ -17,12 +17,13 @@ class Post extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'description' => $this->description,
+            'description' => $this->when($this->description != '', $this->description),
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'updated_at' => $this->when($this->updated_at != '', $this->updated_at),
             'tags' => Tag::collection($this->tags),
             'comments' => Comment::collection($this->whenLoaded('comments')),
-            'answers' => Answer::collection($this->whenLoaded('answers'))
+            'answers' => Answer::collection($this->whenLoaded('answers')),
+            'owner' => new User($this->user)
         ];
     }
 }

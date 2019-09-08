@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Header, Label, Loader } from 'semantic-ui-react';
 
 import { fetchPostDetails } from '../../actions';
+import CommentList from '../CommentList/CommentList';
 
 class PostDetail extends React.Component {
     componentDidMount() {
@@ -23,7 +24,9 @@ class PostDetail extends React.Component {
             <Label key={index}>{tag.name}</Label>
         ));
 
-        const answers = post.data.answers.map(answer => <p>{answer.body}</p>);
+        const answers = post.data.answers.map((answer, index) => (
+            <p key={index}>{answer.body}</p>
+        ));
 
         return (
             <div>
@@ -32,6 +35,11 @@ class PostDetail extends React.Component {
                 </Header>
                 <Header.Content>{post.data.description}</Header.Content>
                 {tags}
+
+                <Header as="h5">Comments</Header>
+                <Header.Content>
+                    <CommentList comments={post.data.comments} />
+                </Header.Content>
 
                 <Header as="h4">{numOfAnswers} Answers</Header>
                 {answers}

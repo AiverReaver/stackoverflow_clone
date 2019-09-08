@@ -11,7 +11,7 @@ class PostsController extends Controller
 {
     public function index()
     {
-        $posts = Post::paginate(15);
+        $posts = Post::select('title', 'created_at', 'user_id', 'id')->paginate(15);
 
         return PostResource::collection($posts);
     }
