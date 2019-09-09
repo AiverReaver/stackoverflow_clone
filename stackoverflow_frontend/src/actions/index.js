@@ -5,6 +5,8 @@ import {
     FETCH_POSTS,
     FETCH_POSTS_PENDING,
     FETCH_POST_DETAILS,
+    FETCH_TAGS_PENDING,
+    FETCH_TAGS,
     USER_LOGGED_IN_SUCCESS,
     USER_LOGGED_IN_FAIL,
     USER_REGISTER_SUCCESS,
@@ -12,19 +14,22 @@ import {
 } from './types';
 
 export const fetchposts = (page, searchQuery) => async dispatch => {
-    const res = await stackoverflow.get('/posts', {
-        params: {
-            page,
-            searchQuery
-        }
-    });
+    let res;
+
     if (searchQuery) {
-        res.data.searchQuery = searchQuery;
         dispatch({
             type: FETCH_POSTS_PENDING
         });
     }
 
+    res = await stackoverflow.get('/posts', {
+        params: {
+            page,
+            searchQuery
+        }
+    });
+
+    res.data.searchQuery = searchQuery;
     dispatch({
         type: FETCH_POSTS,
         payload: res.data
@@ -36,6 +41,23 @@ export const fetchPostDetails = id => async dispatch => {
 
     dispatch({
         type: FETCH_POST_DETAILS,
+        payload: res.data
+    });
+};
+
+export const fetchTags = searchQuery => async dispatch => {
+    dispatch({
+        type: FETCH_TAGS_PENDING
+    });
+
+    const res = await stackoverflow.get('/tags', {
+        params: {
+            searchQuery
+        }
+    });
+
+    dispatch({
+        type: FETCH_TAGS,
         payload: res.data
     });
 };

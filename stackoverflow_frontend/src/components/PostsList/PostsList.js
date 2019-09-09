@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Item, Loader, Pagination } from 'semantic-ui-react';
+import { Item, Loader, Pagination, Button } from 'semantic-ui-react';
 
 import PostItem from '../PostItem/PostItem';
 import { fetchposts } from '../../actions';
@@ -22,6 +23,11 @@ class PostsList extends React.Component {
             });
             return (
                 <div>
+                    <Link exact="true" to="/question/ask">
+                        <Button primary floated="right">
+                            Ask Question
+                        </Button>
+                    </Link>
                     <Pagination
                         boundaryRange={0}
                         defaultActivePage={posts.meta.current_page}

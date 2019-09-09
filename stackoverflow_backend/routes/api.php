@@ -26,7 +26,7 @@ Route::delete('/posts/{post}', 'PostsController@delete');
 
 
 Route::post('/tags', 'TagsController@store');
-Route::get('/search', 'TagsController@getTags');
+Route::get('/tags', 'TagsController@getTags');
 
 Route::post('/register', 'AuthController@register');
 

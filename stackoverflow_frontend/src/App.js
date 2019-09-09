@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar';
 import PostDetail from './components/PostDetail/PostDetail';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
+import CreatePost from './components/CreatePost/CreatePost';
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Navbar />
                 <Container>
                     <Route path="/" exact component={PostsList} />
+                    <Route path="/question/ask" exact component={CreatePost} />
                     <Route path="/questions/:id" exact component={PostDetail} />
                     <Route path="/login" exact component={Login} />
                     <Route path="/register" exact component={Register} />
