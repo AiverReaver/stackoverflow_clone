@@ -3,7 +3,8 @@ import axios from 'axios';
 const instanse = axios.create({
     baseURL: 'http://localhost:8000/api',
     headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Accept: 'application/json'
     }
 });
 
@@ -13,7 +14,7 @@ instanse.interceptors.response.use(
     },
     function(error) {
         if (error.response) {
-            error = error.response.data.error;
+            error = error.response.data.message;
         } else if (error.request) {
             // console.log(error.request);
         } else {
