@@ -17,7 +17,15 @@ class PostsController extends Controller
 
     public function index()
     {
-        $posts = Post::select('title', 'created_at', 'user_id', 'id')->paginate(15);
+
+        $posts = Post::select('title', 'created_at', 'user_id', 'id');
+
+        if (request()->query('searchQuery') != '') {
+            $posts = $posts->where('title', 'like', '%' . request()->query('searchQuery') . '%');
+        }
+
+        $posts = $posts->paginate(15);
+
 
         return PostResource::collection($posts);
     }

@@ -15,7 +15,7 @@ class Login extends React.Component {
     }
 
     onFormSubmit = () => {
-        this.setState({submited: true});
+        this.setState({ submited: true });
         this.props.loginUser(this.state);
     };
 
@@ -30,7 +30,11 @@ class Login extends React.Component {
                 verticalAlign="middle"
             >
                 <Grid.Column style={{ maxWidth: 450 }}>
-                    <Form size="large" onSubmit={this.onFormSubmit} loading={submited}>
+                    <Form
+                        size="large"
+                        onSubmit={this.onFormSubmit}
+                        loading={submited}
+                    >
                         <Segment stacked>
                             <Form.Input
                                 fluid

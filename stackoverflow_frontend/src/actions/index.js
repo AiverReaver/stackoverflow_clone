@@ -1,6 +1,9 @@
+import alertify from 'alertifyjs';
+
 import stackoverflow from '../api';
 import {
     FETCH_POSTS,
+    FETCH_POSTS_PENDING,
     FETCH_POST_DETAILS,
     USER_LOGGED_IN_SUCCESS,
     USER_LOGGED_IN_FAIL,
@@ -8,12 +11,20 @@ import {
     USER_REGISTER_FAIL
 } from './types';
 
-export const fetchposts = page => async dispatch => {
+export const fetchposts = (page, searchQuery) => async dispatch => {
     const res = await stackoverflow.get('/posts', {
         params: {
-            page
+            page,
+            searchQuery
         }
     });
+    if (searchQuery) {
+        res.data.searchQuery = searchQuery;
+        dispatch({
+            type: FETCH_POSTS_PENDING
+        });
+    }
+
     dispatch({
         type: FETCH_POSTS,
         payload: res.data
@@ -44,7 +55,8 @@ export const loginUser = ({ email, password }) => async dispatch => {
             type: USER_LOGGED_IN_SUCCESS,
             payload: res.data
         });
-    } catch {
+    } catch (error) {
+        alertify.error(error);
         dispatch({
             type: USER_LOGGED_IN_FAIL
         });
@@ -61,7 +73,7 @@ export const registerUser = ({ email, name, password }) => async dispatch => {
             password
         });
         localStorage.setItem('token', res.data.access_token);
-        stackoverflow.defaults.headers.common[
+        stackoverflow.defaults.headers[
             'Authorization'
         ] = `Bearer ${res.data.access_token}`;
         dispatch({

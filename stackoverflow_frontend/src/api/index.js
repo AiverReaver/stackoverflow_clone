@@ -1,8 +1,26 @@
 import axios from 'axios';
 
-export default axios.create({
+const instanse = axios.create({
     baseURL: 'http://localhost:8000/api',
     headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
     }
 });
+
+instanse.interceptors.response.use(
+    function(response) {
+        return response;
+    },
+    function(error) {
+        if (error.response) {
+            error = error.response.data.error;
+        } else if (error.request) {
+            // console.log(error.request);
+        } else {
+            // console.log('Error', error.message);
+        }
+        return Promise.reject(error);
+    }
+);
+
+export default instanse;

@@ -1,12 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Input, Menu, Button } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+
+import { fetchposts } from '../../actions';
 
 class Navbar extends React.Component {
     state = { activeItem: 'home' };
 
-    handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+    handleItemClick = (e, { name }) => {
+        this.props.history.push('/');
+        this.setState({ activeItem: name });
+    };
+
+    onSearch = e => {
+        this.props.fetchposts(1, e.target.value);
+    };
 
     renderUserButtons = () => {
         const { signed_in } = this.props;
@@ -46,18 +55,13 @@ class Navbar extends React.Component {
                     active={activeItem === 'home'}
                     onClick={this.handleItemClick}
                 />
-                <Menu.Item
-                    name="messages"
-                    active={activeItem === 'messages'}
-                    onClick={this.handleItemClick}
-                />
-                <Menu.Item
-                    name="friends"
-                    active={activeItem === 'friends'}
-                    onClick={this.handleItemClick}
-                />
                 <Menu.Item>
-                    <Input icon="search" placeholder="Search..." />
+                    <Input
+                        loading={this.props.isLoading}
+                        icon="search"
+                        onChange={this.onSearch}
+                        placeholder="Search..."
+                    />
                 </Menu.Item>
                 {this.renderUserButtons()}
             </Menu>
@@ -65,13 +69,14 @@ class Navbar extends React.Component {
     }
 }
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({ user, postsReducer }) => {
     return {
-        signed_in: user.signed_in
+        signed_in: user.signed_in,
+        isLoading: postsReducer.isQuery
     };
 };
 
 export default connect(
     mapStateToProps,
-    null
-)(Navbar);
+    { fetchposts }
+)(withRouter(Navbar));

@@ -10,7 +10,7 @@ class PostsList extends React.Component {
         this.props.fetchposts();
     }
     handlePaginationChange = (e, { activePage }) => {
-        this.props.fetchposts(activePage);
+        this.props.fetchposts(activePage, this.props.posts.searchQuery);
     };
 
     render = () => {
