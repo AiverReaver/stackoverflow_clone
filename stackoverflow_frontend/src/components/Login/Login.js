@@ -58,7 +58,7 @@ class Login extends React.Component {
 
                             <Button
                                 type="submit"
-                                color="teal"
+                                color="primary"
                                 fluid
                                 size="large"
                             >

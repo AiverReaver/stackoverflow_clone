@@ -36,7 +36,7 @@ class Register extends React.Component {
                 verticalAlign="middle"
             >
                 <Grid.Column style={{ maxWidth: 450 }}>
-                    <Header as="h2" color="teal" textAlign="center">
+                    <Header as="h2" textAlign="center">
                         Create your Stack Overflow account. It’s free and only
                         takes a minute.
                     </Header>
@@ -73,7 +73,7 @@ class Register extends React.Component {
 
                             <Button
                                 type="submit"
-                                color="teal"
+                                color="primary"
                                 fluid
                                 size="large"
                             >
