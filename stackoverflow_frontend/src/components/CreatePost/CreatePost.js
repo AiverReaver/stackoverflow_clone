@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Button, Dropdown } from 'semantic-ui-react';
 
-import { fetchTags } from '../../actions';
+import { fetchTags, createPost } from '../../actions';
 
 class CreatePost extends React.Component {
     state = {
@@ -11,6 +11,12 @@ class CreatePost extends React.Component {
         isFetching: false,
         tags: []
     };
+
+    componentDidUpdate() {
+        if (this.props.postCreated) {
+            this.props.history.push('/');
+        }
+    }
 
     handleChange = (e, { name, value }) => {
         this.setState({ [name]: value });
@@ -27,7 +33,7 @@ class CreatePost extends React.Component {
             };
         });
 
-        console.log(post);
+        this.props.createPost(post);
     };
     render() {
         const { tags } = this.state;
@@ -73,14 +79,15 @@ class CreatePost extends React.Component {
     }
 }
 
-const mapStateToProps = ({ tags }) => {
+const mapStateToProps = ({ tags, postsReducer }) => {
     return {
         isFetching: tags.isFetching,
-        tags: tags.tags
+        tags: tags.tags,
+        postCreated: postsReducer.postCreated
     };
 };
 
 export default connect(
     mapStateToProps,
-    { fetchTags }
+    { fetchTags, createPost }
 )(CreatePost);

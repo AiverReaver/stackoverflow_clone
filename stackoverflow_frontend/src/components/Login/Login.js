@@ -56,12 +56,7 @@ class Login extends React.Component {
                                 onChange={this.handleChange}
                             />
 
-                            <Button
-                                type="submit"
-                                color="primary"
-                                fluid
-                                size="large"
-                            >
+                            <Button type="submit" primary fluid size="large">
                                 Login
                             </Button>
                         </Segment>

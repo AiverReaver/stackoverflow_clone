@@ -10,8 +10,21 @@ import {
     USER_LOGGED_IN_SUCCESS,
     USER_LOGGED_IN_FAIL,
     USER_REGISTER_SUCCESS,
-    USER_REGISTER_FAIL
+    USER_REGISTER_FAIL,
+    POST_CREATED
 } from './types';
+
+export const createPost = ({ title, description, tags }) => async dispatch => {
+    await stackoverflow.post('/posts', {
+        title,
+        description,
+        tags
+    });
+
+    dispatch({
+        type: POST_CREATED
+    });
+};
 
 export const fetchposts = (page, searchQuery) => async dispatch => {
     let res;

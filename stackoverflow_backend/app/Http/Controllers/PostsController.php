@@ -38,7 +38,7 @@ class PostsController extends Controller
 
     public function store()
     {
-        $post = Post::create($this->validateRequest());
+        $post = auth()->user()->posts()->create($this->validateRequest());
 
         if ($tags = request('tags')) {
             $tags = Tag::whereIn('name', $tags)->get();
