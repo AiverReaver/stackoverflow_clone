@@ -17,7 +17,7 @@ class PostItem extends React.Component {
                     <Item.Header>
                         <Link to={`questions/${post.id}`}>{post.title}</Link>
                     </Item.Header>
-                    <Item.Meta>vote view answer</Item.Meta>
+                    <Item.Meta> {post.answers_count} answers</Item.Meta>
                     <Item.Extra>
                         <p className="ui primary right floated ">
                             asked <Moment fromNow>{post.created_at}</Moment>{' '}

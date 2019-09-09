@@ -23,7 +23,8 @@ class Post extends JsonResource
             'tags' => Tag::collection($this->tags),
             'comments' => Comment::collection($this->whenLoaded('comments')),
             'answers' => Answer::collection($this->whenLoaded('answers')),
-            'owner' => new User($this->user)
+            'owner' => new User($this->user),
+            'answers_count' => $this->answers->count()
         ];
     }
 }
