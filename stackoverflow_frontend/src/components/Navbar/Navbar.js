@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Input, Menu, Button } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
 
-import { fetchposts } from '../../actions';
+import { fetchposts, logoutUser } from '../../actions';
 
 class Navbar extends React.Component {
     state = { activeItem: 'home' };
@@ -17,6 +17,10 @@ class Navbar extends React.Component {
         this.props.fetchposts(1, e.target.value);
     };
 
+    onLogoutClicked = () => {
+        this.props.logoutUser();
+    };
+
     renderUserButtons = () => {
         const { signed_in } = this.props;
 
@@ -24,7 +28,7 @@ class Navbar extends React.Component {
             return (
                 <Menu.Menu position="right">
                     <Menu.Item>
-                        <Button>Log out</Button>
+                        <Button onClick={this.onLogoutClicked}>Log out</Button>
                     </Menu.Item>
                 </Menu.Menu>
             );
@@ -78,5 +82,5 @@ const mapStateToProps = ({ user, postsReducer }) => {
 
 export default connect(
     mapStateToProps,
-    { fetchposts }
+    { fetchposts, logoutUser }
 )(withRouter(Navbar));

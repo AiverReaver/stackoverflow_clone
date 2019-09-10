@@ -1,4 +1,5 @@
 import alertify from 'alertifyjs';
+import jwt from 'jsonwebtoken';
 
 import stackoverflow from '../api';
 import {
@@ -11,7 +12,10 @@ import {
     USER_LOGGED_IN_FAIL,
     USER_REGISTER_SUCCESS,
     USER_REGISTER_FAIL,
-    POST_CREATED
+    POST_CREATED,
+    USER_LOGGED_IN,
+    USER_NOT_LOGGED_IN,
+    USER_LOGOUT_SUCCESS
 } from './types';
 
 export const createPost = ({ title, description, tags }) => async dispatch => {
@@ -75,6 +79,31 @@ export const fetchTags = searchQuery => async dispatch => {
     });
 };
 
+export const isLognedIn = () => async dispatch => {
+    let decodedToken;
+    let token = localStorage.getItem('token');
+
+    if (localStorage.getItem('token') !== '') {
+        decodedToken = jwt.decode(token, {
+            complete: true
+        });
+    }
+    if (!decodedToken) {
+        dispatch({
+            type: USER_NOT_LOGGED_IN
+        });
+    } else if (decodedToken.payload.exp < new Date().getTime() / 1000) {
+        dispatch({
+            type: USER_NOT_LOGGED_IN
+        });
+    } else {
+        dispatch({
+            type: USER_LOGGED_IN,
+            payload: token
+        });
+    }
+};
+
 export const loginUser = ({ email, password }) => async dispatch => {
     let res;
     try {
@@ -86,6 +115,7 @@ export const loginUser = ({ email, password }) => async dispatch => {
         stackoverflow.defaults.headers[
             'Authorization'
         ] = `Bearer ${res.data.access_token}`;
+        alertify.success('Successfull logged in');
         dispatch({
             type: USER_LOGGED_IN_SUCCESS,
             payload: res.data
@@ -96,6 +126,17 @@ export const loginUser = ({ email, password }) => async dispatch => {
             type: USER_LOGGED_IN_FAIL
         });
     }
+};
+
+export const logoutUser = () => async dispatch => {
+    const res = await stackoverflow.post('/logout');
+
+    localStorage.removeItem('token');
+    alertify.success(res.data.message);
+
+    dispatch({
+        type: USER_LOGOUT_SUCCESS
+    });
 };
 
 export const registerUser = ({ email, name, password }) => async dispatch => {
@@ -111,11 +152,13 @@ export const registerUser = ({ email, name, password }) => async dispatch => {
         stackoverflow.defaults.headers[
             'Authorization'
         ] = `Bearer ${res.data.access_token}`;
+        alertify.success('Successfull signed up');
         dispatch({
             type: USER_REGISTER_SUCCESS,
             payload: res.data
         });
     } catch {
+        alertify.error('Something went wrong');
         dispatch({
             type: USER_REGISTER_FAIL
         });

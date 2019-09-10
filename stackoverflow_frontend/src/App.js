@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 
 import PostsList from './components/PostsList/PostsList';
 import Navbar from './components/Navbar/Navbar';
@@ -9,7 +10,10 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import CreatePost from './components/CreatePost/CreatePost';
 
-function App() {
+import { isLognedIn } from './actions';
+
+function App(props) {
+    props.isLognedIn();
     return (
         <div>
             <BrowserRouter>
@@ -26,4 +30,7 @@ function App() {
     );
 }
 
-export default App;
+export default connect(
+    null,
+    { isLognedIn }
+)(App);
