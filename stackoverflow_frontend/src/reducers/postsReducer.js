@@ -2,11 +2,13 @@ import {
     FETCH_POSTS,
     FETCH_POST_DETAILS,
     FETCH_POSTS_PENDING,
-    POST_CREATED
+    POST_CREATED,
+    POST_COMMENT_CREATED
 } from '../actions/types';
 const INITIAL_STATE = {
     posts: null,
-    postDetail: null
+    postDetail: null,
+    isQuery: false
 };
 
 export default (state = [], action) => {
@@ -32,6 +34,13 @@ export default (state = [], action) => {
             };
 
         case FETCH_POST_DETAILS:
+            return {
+                ...state,
+                postDetail: action.payload,
+                isQuery: false
+            };
+
+        case POST_COMMENT_CREATED:
             return {
                 ...state,
                 postDetail: action.payload,

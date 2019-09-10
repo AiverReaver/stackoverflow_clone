@@ -24,6 +24,10 @@ Route::post('/posts', 'PostsController@store');
 Route::put('/posts/{post}', 'PostsController@update');
 Route::delete('/posts/{post}', 'PostsController@delete');
 
+Route::post('/posts/{post}/comments', 'CommentsController@storePostComment');
+
+Route::post('/answers/{answer}/comments', 'CommentsController@storeAnswerComment');
+
 
 Route::post('/tags', 'TagsController@store');
 Route::get('/tags', 'TagsController@getTags');

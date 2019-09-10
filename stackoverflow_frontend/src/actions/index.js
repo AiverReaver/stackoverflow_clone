@@ -15,7 +15,8 @@ import {
     POST_CREATED,
     USER_LOGGED_IN,
     USER_NOT_LOGGED_IN,
-    USER_LOGOUT_SUCCESS
+    USER_LOGOUT_SUCCESS,
+    POST_COMMENT_CREATED
 } from './types';
 
 export const createPost = ({ title, description, tags }) => async dispatch => {
@@ -27,6 +28,24 @@ export const createPost = ({ title, description, tags }) => async dispatch => {
 
     dispatch({
         type: POST_CREATED
+    });
+};
+
+export const createPostComment = ({ id, body }) => async (
+    dispatch,
+    getState
+) => {
+    const res = await stackoverflow.post(`/posts/${id}/comments`, {
+        body
+    });
+
+    const { postsReducer } = getState();
+
+    postsReducer.postDetail.data.comments.push(res.data.data);
+
+    dispatch({
+        type: POST_COMMENT_CREATED,
+        payload: { ...postsReducer.postDetail }
     });
 };
 

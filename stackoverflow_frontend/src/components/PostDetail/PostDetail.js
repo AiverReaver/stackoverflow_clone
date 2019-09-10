@@ -9,17 +9,24 @@ import {
     TextArea
 } from 'semantic-ui-react';
 
-import { fetchPostDetails } from '../../actions';
+import { fetchPostDetails, createPostComment } from '../../actions';
 import CommentList from '../CommentList/CommentList';
 
 class PostDetail extends React.Component {
-    state = { isAddComment: false, postComment: '', answerComment: '' };
+    state = { isAddComment: false, body: '' };
+
     componentDidMount() {
         this.props.fetchPostDetails(this.props.match.params.id);
     }
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
-    handleSubmit = () => {};
+    handleSubmit = () => {
+        this.props.createPostComment({
+            ...this.state,
+            id: this.props.post.data.id
+        });
+        this.setState({ isAddComment: false });
+    };
 
     onCommentButtonClicked = () => {
         this.setState({ isAddComment: true });
@@ -30,7 +37,7 @@ class PostDetail extends React.Component {
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group>
                         <Form.Field
-                            name="postComment"
+                            name="body"
                             control={TextArea}
                             width="8"
                             placeholder="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments."
@@ -99,7 +106,8 @@ const mapStateToProps = ({ postsReducer }) => {
 };
 
 const mapActionsToProps = {
-    fetchPostDetails
+    fetchPostDetails,
+    createPostComment
 };
 
 export default connect(
