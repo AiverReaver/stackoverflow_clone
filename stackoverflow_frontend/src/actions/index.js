@@ -16,37 +16,68 @@ import {
     USER_LOGGED_IN,
     USER_NOT_LOGGED_IN,
     USER_LOGOUT_SUCCESS,
-    POST_COMMENT_CREATED
+    POST_COMMENT_CREATED,
+    POST_ANSWER_CREATED
 } from './types';
 
 export const createPost = ({ title, description, tags }) => async dispatch => {
-    await stackoverflow.post('/posts', {
-        title,
-        description,
-        tags
-    });
+    try {
+        await stackoverflow.post('/posts', {
+            title,
+            description,
+            tags
+        });
 
-    dispatch({
-        type: POST_CREATED
-    });
+        dispatch({
+            type: POST_CREATED
+        });
+    } catch (e) {
+        alertify.error(e);
+    }
 };
 
 export const createPostComment = ({ id, body }) => async (
     dispatch,
     getState
 ) => {
-    const res = await stackoverflow.post(`/posts/${id}/comments`, {
-        body
-    });
+    try {
+        const res = await stackoverflow.post(`/posts/${id}/comments`, {
+            body
+        });
 
-    const { postsReducer } = getState();
+        const { postsReducer } = getState();
 
-    postsReducer.postDetail.data.comments.push(res.data.data);
+        postsReducer.postDetail.data.comments.push(res.data.data);
 
-    dispatch({
-        type: POST_COMMENT_CREATED,
-        payload: { ...postsReducer.postDetail }
-    });
+        dispatch({
+            type: POST_COMMENT_CREATED,
+            payload: { ...postsReducer.postDetail }
+        });
+    } catch (e) {
+        alertify.erroe(e);
+    }
+};
+
+export const createPostAnswer = ({ id, body }) => async (
+    dispatch,
+    getState
+) => {
+    try {
+        const res = await stackoverflow.post(`/posts/${id}/answers`, {
+            body
+        });
+
+        const { postsReducer } = getState();
+
+        postsReducer.postDetail.data.answers.push(res.data.data);
+
+        dispatch({
+            type: POST_ANSWER_CREATED,
+            payload: { ...postsReducer.postDetail }
+        });
+    } catch (e) {
+        alertify.erroe(e);
+    }
 };
 
 export const fetchposts = (page, searchQuery) => async dispatch => {

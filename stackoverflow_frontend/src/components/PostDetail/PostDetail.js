@@ -11,6 +11,8 @@ import {
 
 import { fetchPostDetails, createPostComment } from '../../actions';
 import CommentList from '../CommentList/CommentList';
+import CreateAnswer from '../CreateAnswer/CreateAnswer';
+import Moment from 'react-moment';
 
 class PostDetail extends React.Component {
     state = { isAddComment: false, body: '' };
@@ -42,7 +44,7 @@ class PostDetail extends React.Component {
                             width="8"
                             placeholder="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments."
                             onChange={this.handleChange}
-                        ></Form.Field>
+                        />
                         <Form.Button primary content="Add Comment" />
                     </Form.Group>
                 </Form>
@@ -59,6 +61,7 @@ class PostDetail extends React.Component {
             />
         );
     };
+
     render() {
         const { post } = this.props;
 
@@ -74,9 +77,15 @@ class PostDetail extends React.Component {
             <Label key={index}>{tag.name}</Label>
         ));
 
-        const answers = post.data.answers.map((answer, index) => (
-            <p key={index}>{answer.body}</p>
-        ));
+        const answers = post.data.answers.map((answer, index) => {
+            return (
+                <p key={index}>
+                    {answer.body} - answered{' '}
+                    <Moment fromNow>{answer.created_at}</Moment> by{' '}
+                    {answer.owner.name}
+                </p>
+            );
+        });
 
         return (
             <div>
@@ -85,15 +94,14 @@ class PostDetail extends React.Component {
                 </Header>
                 <Header.Content>{post.data.description}</Header.Content>
                 {tags}
-
                 <Header as="h5">Comments</Header>
                 <Header.Content>
                     <CommentList comments={post.data.comments} />
                     {this.renderCommentForm()}
                 </Header.Content>
-
                 <Header as="h4">{numOfAnswers} Answers</Header>
                 {answers}
+                <CreateAnswer postId={this.props.post.data.id} />;
             </div>
         );
     }

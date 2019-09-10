@@ -3,7 +3,8 @@ import {
     FETCH_POST_DETAILS,
     FETCH_POSTS_PENDING,
     POST_CREATED,
-    POST_COMMENT_CREATED
+    POST_COMMENT_CREATED,
+    POST_ANSWER_CREATED
 } from '../actions/types';
 const INITIAL_STATE = {
     posts: null,
@@ -43,8 +44,13 @@ export default (state = [], action) => {
         case POST_COMMENT_CREATED:
             return {
                 ...state,
-                postDetail: action.payload,
-                isQuery: false
+                postDetail: action.payload
+            };
+
+        case POST_ANSWER_CREATED:
+            return {
+                ...state,
+                postDetail: action.payload
             };
 
         default:
