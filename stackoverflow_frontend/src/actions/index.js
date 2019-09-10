@@ -17,7 +17,8 @@ import {
     USER_NOT_LOGGED_IN,
     USER_LOGOUT_SUCCESS,
     POST_COMMENT_CREATED,
-    POST_ANSWER_CREATED
+    POST_ANSWER_CREATED,
+    ANSWER_COMMENT_CREATED
 } from './types';
 
 export const createPost = ({ title, description, tags }) => async dispatch => {
@@ -54,7 +55,34 @@ export const createPostComment = ({ id, body }) => async (
             payload: { ...postsReducer.postDetail }
         });
     } catch (e) {
-        alertify.erroe(e);
+        alertify.error(e);
+    }
+};
+
+export const createAnswerComment = ({ id, body }) => async (
+    dispatch,
+    getState
+) => {
+    try {
+        const res = await stackoverflow.post(`/answers/${id}/comments`, {
+            body
+        });
+
+        const { postsReducer } = getState();
+
+        postsReducer.postDetail.data.answers.map(answer => {
+            if (answer.id === id) {
+                answer.comments.push(res.data.data);
+            }
+            return answer;
+        });
+
+        dispatch({
+            type: ANSWER_COMMENT_CREATED,
+            payload: { ...postsReducer.postDetail }
+        });
+    } catch (e) {
+        alertify.error(e);
     }
 };
 
@@ -76,7 +104,7 @@ export const createPostAnswer = ({ id, body }) => async (
             payload: { ...postsReducer.postDetail }
         });
     } catch (e) {
-        alertify.erroe(e);
+        alertify.error(e);
     }
 };
 

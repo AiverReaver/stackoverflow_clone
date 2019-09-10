@@ -20,7 +20,11 @@ class CommentList extends React.Component {
             );
         });
 
-        return <Comment.Group size="mini">{commentsEle}</Comment.Group>;
+        return (
+            <div className="comments-custom">
+                <Comment.Group size="mini">{commentsEle}</Comment.Group>
+            </div>
+        );
     }
 }
 

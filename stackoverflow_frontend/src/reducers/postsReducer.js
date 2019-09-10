@@ -4,13 +4,14 @@ import {
     FETCH_POSTS_PENDING,
     POST_CREATED,
     POST_COMMENT_CREATED,
-    POST_ANSWER_CREATED
+    POST_ANSWER_CREATED,
+    ANSWER_COMMENT_CREATED
 } from '../actions/types';
-const INITIAL_STATE = {
-    posts: null,
-    postDetail: null,
-    isQuery: false
-};
+// const INITIAL_STATE = {
+//     posts: null,
+//     postDetail: null,
+//     isQuery: false
+// };
 
 export default (state = [], action) => {
     switch (action.type) {
@@ -48,6 +49,12 @@ export default (state = [], action) => {
             };
 
         case POST_ANSWER_CREATED:
+            return {
+                ...state,
+                postDetail: action.payload
+            };
+
+        case ANSWER_COMMENT_CREATED:
             return {
                 ...state,
                 postDetail: action.payload

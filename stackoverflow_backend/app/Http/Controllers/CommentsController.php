@@ -27,7 +27,7 @@ class CommentsController extends Controller
         $comment->user_id = auth()->id();
 
         $answer->comments()->save($comment);
-        return response($comment);
+        return new CommentResource($comment);
     }
 
     protected function validateRequest()

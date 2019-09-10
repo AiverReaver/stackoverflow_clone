@@ -12,6 +12,8 @@ import CreatePost from './components/CreatePost/CreatePost';
 
 import { isLognedIn } from './actions';
 
+import './App.css';
+
 function App(props) {
     props.isLognedIn();
     return (

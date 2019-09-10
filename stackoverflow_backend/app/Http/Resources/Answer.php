@@ -18,7 +18,7 @@ class Answer extends JsonResource
             'id' => $this->id,
             'body' => $this->body,
             'created_at' => $this->created_at,
-            'comments' => $this->comments,
+            'comments' => Comment::collection($this->comments),
             'owner' => new User($this->user)
         ];
     }
