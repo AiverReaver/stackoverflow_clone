@@ -35,10 +35,10 @@ class PostDetail extends React.Component {
         this.setState({ isPostAddComment: false });
     };
 
-    handleSubmitCommentAnswer = () => {
+    handleSubmitCommentAnswer = id => {
         this.props.createAnswerComment({
             ...this.state,
-            id: this.props.post.data.id
+            id
         });
         this.setState({ isAnswerAddComment: false });
     };
@@ -50,7 +50,7 @@ class PostDetail extends React.Component {
     onAnswerCommentButtonClicked = () => {
         this.setState({ isAnswerAddComment: true });
     };
-    renderCommentForm = isForPost => {
+    renderCommentForm = (isForPost, id) => {
         if (this.state.isPostAddComment && isForPost) {
             return (
                 <Form onSubmit={this.handleSubmitCommentPost}>
@@ -70,7 +70,7 @@ class PostDetail extends React.Component {
 
         if (this.state.isAnswerAddComment && !isForPost) {
             return (
-                <Form onSubmit={this.handleSubmitCommentAnswer}>
+                <Form onSubmit={() => this.handleSubmitCommentAnswer(id)}>
                     <Form.Group>
                         <Form.Field
                             name="body"
@@ -124,7 +124,7 @@ class PostDetail extends React.Component {
                         {answer.owner.name}
                     </p>
                     <CommentList comments={answer.comments} />
-                    {this.renderCommentForm(false)}
+                    {this.renderCommentForm(false, answer.id)}
                     <Divider />
                 </div>
             );

@@ -11,10 +11,15 @@ class CommentList extends React.Component {
             return (
                 <Comment key={index}>
                     <Comment.Content>
-                        <Comment.Text>
-                            {comment.body} - {comment.owner.name}{' '}
-                            <Moment fromNow>{comment.created_at}</Moment>
-                        </Comment.Text>
+                        <Comment.Author as="a">
+                            {comment.owner.name}
+                        </Comment.Author>
+                        <Comment.Metadata>
+                            <div>
+                                <Moment fromNow>{comment.created_at}</Moment>
+                            </div>
+                        </Comment.Metadata>
+                        <Comment.Text>{comment.body}</Comment.Text>
                     </Comment.Content>
                 </Comment>
             );
