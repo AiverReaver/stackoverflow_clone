@@ -13,7 +13,7 @@ class PostsController extends Controller
     public function index()
     {
 
-        $posts = Post::select('title', 'created_at', 'user_id', 'id');
+        $posts = Post::select('title', 'created_at', 'user_id', 'id')->orderBy('created_at', 'desc');
 
         if (request()->query('searchQuery') != '') {
             $posts = $posts->where('title', 'like', '%' . request()->query('searchQuery') . '%');
@@ -63,7 +63,8 @@ class PostsController extends Controller
     {
         return request()->validate([
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'tags' => 'required'
         ]);
     }
 }
