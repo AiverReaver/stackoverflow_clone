@@ -1,104 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-    Header,
-    Label,
-    Loader,
-    Button,
-    Form,
-    TextArea,
-    Divider
-} from 'semantic-ui-react';
+import { Header, Label, Loader, Divider } from 'semantic-ui-react';
 
-import {
-    fetchPostDetails,
-    createPostComment,
-    createAnswerComment
-} from '../../actions';
+import { fetchPostDetails } from '../../actions';
 import CommentList from '../CommentList/CommentList';
 import CreateAnswer from '../CreateAnswer/CreateAnswer';
 import Moment from 'react-moment';
+import CreateComment from '../CreateComment/CreateComment';
 
 class PostDetail extends React.Component {
-    state = { isAddPostComment: false, isAddAnswerComment: false, body: '' };
+    state = { body: '' };
 
     componentDidMount() {
         this.props.fetchPostDetails(this.props.match.params.id);
     }
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
-
-    handleSubmitCommentPost = () => {
-        this.props.createPostComment({
-            ...this.state,
-            id: this.props.post.data.id
-        });
-        this.setState({ isPostAddComment: false });
-    };
-
-    handleSubmitCommentAnswer = id => {
-        this.props.createAnswerComment({
-            ...this.state,
-            id
-        });
-        this.setState({ isAnswerAddComment: false });
-    };
-
-    onPostCommentButtonClicked = () => {
-        this.setState({ isPostAddComment: true });
-    };
-
-    onAnswerCommentButtonClicked = () => {
-        this.setState({ isAnswerAddComment: true });
-    };
-    renderCommentForm = (isForPost, id) => {
-        if (this.state.isPostAddComment && isForPost) {
-            return (
-                <Form onSubmit={this.handleSubmitCommentPost}>
-                    <Form.Group>
-                        <Form.Field
-                            name="body"
-                            control={TextArea}
-                            width="8"
-                            placeholder="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments."
-                            onChange={this.handleChange}
-                        />
-                        <Form.Button primary content="Add Comment" />
-                    </Form.Group>
-                </Form>
-            );
-        }
-
-        if (this.state.isAnswerAddComment && !isForPost) {
-            return (
-                <Form onSubmit={() => this.handleSubmitCommentAnswer(id)}>
-                    <Form.Group>
-                        <Form.Field
-                            name="body"
-                            control={TextArea}
-                            width="8"
-                            placeholder="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments."
-                            onChange={this.handleChange}
-                        />
-                        <Form.Button primary content="Add Comment" />
-                    </Form.Group>
-                </Form>
-            );
-        }
-
-        return (
-            <Button
-                basic
-                color="blue"
-                content="add a comment"
-                size="mini"
-                onClick={
-                    isForPost
-                        ? this.onPostCommentButtonClicked
-                        : this.onAnswerCommentButtonClicked
-                }
-            />
-        );
-    };
 
     render() {
         const { post } = this.props;
@@ -124,7 +40,7 @@ class PostDetail extends React.Component {
                         {answer.owner.name}
                     </p>
                     <CommentList comments={answer.comments} />
-                    {this.renderCommentForm(false, answer.id)}
+                    <CreateComment isForPost={false} id={answer.id} />
                     <Divider />
                 </div>
             );
@@ -142,7 +58,7 @@ class PostDetail extends React.Component {
                 </Header>
                 <Header.Content>
                     <CommentList comments={post.data.comments} />
-                    {this.renderCommentForm(true)}
+                    <CreateComment isForPost={true} id={post.data.id} />
                 </Header.Content>
                 <Header as="h4">{numOfAnswers} Answers</Header>
                 {answers}
@@ -159,9 +75,7 @@ const mapStateToProps = ({ postsReducer }) => {
 };
 
 const mapActionsToProps = {
-    fetchPostDetails,
-    createPostComment,
-    createAnswerComment
+    fetchPostDetails
 };
 
 export default connect(
