@@ -13,14 +13,15 @@ class CreateComment extends React.Component {
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
-    handleSubmitComment = (isForPost, id) => {
+    handleSubmitComment = () => {
+        const {isForPost, id, createPostComment, createAnswerComment} = this.props;
         if (isForPost) {
-            this.props.createPostComment({
+            createPostComment({
                 ...this.state,
                 id
             });
         } else {
-            this.props.createAnswerComment({
+            createAnswerComment({
                 ...this.state,
                 id
             });
@@ -30,44 +31,22 @@ class CreateComment extends React.Component {
 
     renderCommentForm = (isForPost, id) => {
         if (this.state.isAddComment) {
-            if (isForPost) {
-                return (
-                    <Form
-                        onSubmit={() => this.handleSubmitComment(isForPost, id)}
-                    >
-                        <Form.Group>
-                            <Form.Field
-                                name="body"
-                                control={TextArea}
-                                width="8"
-                                placeholder="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments."
-                                onChange={this.handleChange}
-                            />
-                            <Form.Button primary content="Add Comment" />
-                        </Form.Group>
-                    </Form>
-                );
-            } else {
-                return (
-                    <Form
-                        onSubmit={() => this.handleSubmitComment(isForPost, id)}
-                    >
-                        <Form.Group>
-                            <Form.Field
-                                name="body"
-                                control={TextArea}
-                                width="8"
-                                placeholder="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”."
-                                onChange={this.handleChange}
-                            />
-                            <Form.Button primary content="Add Comment" />
-                        </Form.Group>
-                    </Form>
-                );
-            }
-        }
-
-        if (this.state.isAddComment && !isForPost) {
+            
+            return (
+                <Form onSubmit={() => this.handleSubmitComment()}>
+                    <Form.Group>
+                        <Form.Field
+                            name="body"
+                            control={TextArea}
+                            width="8"
+                            placeholder={this.props.placeholder}
+                            onChange={this.handleChange}
+                        />
+                        <Form.Button primary content="Add Comment" />
+                    </Form.Group>
+                </Form>
+            );
+            
         }
 
         return (
@@ -82,8 +61,8 @@ class CreateComment extends React.Component {
     };
 
     render() {
-        const { isForPost, id } = this.props;
-        return this.renderCommentForm(isForPost, id);
+        
+        return this.renderCommentForm();
     }
 }
 

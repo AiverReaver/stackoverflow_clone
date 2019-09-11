@@ -40,7 +40,7 @@ class PostDetail extends React.Component {
                         {answer.owner.name}
                     </p>
                     <CommentList comments={answer.comments} />
-                    <CreateComment isForPost={false} id={answer.id} />
+                    <CreateComment isForPost={false} id={answer.id} placeholder="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”." />
                     <Divider />
                 </div>
             );
@@ -58,7 +58,7 @@ class PostDetail extends React.Component {
                 </Header>
                 <Header.Content>
                     <CommentList comments={post.data.comments} />
-                    <CreateComment isForPost={true} id={post.data.id} />
+                    <CreateComment isForPost={true} id={post.data.id} placeholder="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments." />
                 </Header.Content>
                 <Header as="h4">{numOfAnswers} Answers</Header>
                 {answers}
