@@ -22,4 +22,4 @@ cd into stakoverflow_frontend and run
 And then
 `yarn start` or `npm run start`
 
-### Just enjoy buggy stackoverflow clone app
+### And now enjoy buggy stackoverflow clone app
