@@ -2,12 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Form, TextArea } from 'semantic-ui-react';
 
-import { createPostComment, createAnswerComment } from '../../actions';
+import { createPostComment, createAnswerComment, isLognedIn } from '../../actions';
 
 class CreateComment extends React.Component {
     state = { isAddComment: false, body: '' };
 
     onCommentButtonClicked = () => {
+        this.props.redirctIfNotLoggedIn();
         this.setState({ isAddComment: true });
     };
 
@@ -66,7 +67,9 @@ class CreateComment extends React.Component {
     }
 }
 
+
+
 export default connect(
     null,
-    { createAnswerComment, createPostComment }
+    { createAnswerComment, createPostComment, isLognedIn }
 )(CreateComment);

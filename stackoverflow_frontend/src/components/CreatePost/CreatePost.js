@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Button, Dropdown } from 'semantic-ui-react';
 
-import { fetchTags, createPost } from '../../actions';
+import { fetchTags, createPost, isLognedIn } from '../../actions';
 
 class CreatePost extends React.Component {
     state = {
@@ -11,6 +11,14 @@ class CreatePost extends React.Component {
         isFetching: false,
         tags: []
     };
+
+    componentDidMount() {
+        this.props.isLognedIn();
+
+        if (!this.props.signed_in) {
+            this.props.history.push('/login');
+        }
+    }
 
     componentDidUpdate() {
         if (this.props.postCreated) {
@@ -79,15 +87,16 @@ class CreatePost extends React.Component {
     }
 }
 
-const mapStateToProps = ({ tags, postsReducer }) => {
+const mapStateToProps = ({ tags, postsReducer, user }) => {
     return {
         isFetching: tags.isFetching,
         tags: tags.tags,
-        postCreated: postsReducer.postCreated
+        postCreated: postsReducer.postCreated,
+        signed_in: user.signed_in
     };
 };
 
 export default connect(
     mapStateToProps,
-    { fetchTags, createPost }
+    { fetchTags, createPost, isLognedIn }
 )(CreatePost);

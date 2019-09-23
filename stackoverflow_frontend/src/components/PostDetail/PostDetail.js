@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Header, Label, Loader, Divider } from 'semantic-ui-react';
 
-import { fetchPostDetails } from '../../actions';
+import { fetchPostDetails, isLognedIn } from '../../actions';
 import CommentList from '../CommentList/CommentList';
 import CreateAnswer from '../CreateAnswer/CreateAnswer';
 import Moment from 'react-moment';
@@ -14,6 +14,14 @@ class PostDetail extends React.Component {
     componentDidMount() {
         this.props.fetchPostDetails(this.props.match.params.id);
     }
+
+    redirctIfNotLoggedIn = () => {
+        this.props.isLognedIn();
+        if (!this.props.signed_in) {
+            this.props.history.push('/login');
+        }
+    } 
+
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
     render() {
@@ -40,7 +48,7 @@ class PostDetail extends React.Component {
                         {answer.owner.name}
                     </p>
                     <CommentList comments={answer.comments} />
-                    <CreateComment isForPost={false} id={answer.id} placeholder="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”." />
+                    <CreateComment isForPost={false} id={answer.id} redirctIfNotLoggedIn={this.redirctIfNotLoggedIn } placeholder="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”." />
                     <Divider />
                 </div>
             );
@@ -58,7 +66,7 @@ class PostDetail extends React.Component {
                 </Header>
                 <Header.Content>
                     <CommentList comments={post.data.comments} />
-                    <CreateComment isForPost={true} id={post.data.id} placeholder="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments." />
+                    <CreateComment isForPost={true} id={post.data.id} redirctIfNotLoggedIn={this.redirctIfNotLoggedIn } placeholder="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments." />
                 </Header.Content>
                 <Header as="h4">{numOfAnswers} Answers</Header>
                 {answers}
@@ -68,14 +76,16 @@ class PostDetail extends React.Component {
     }
 }
 
-const mapStateToProps = ({ postsReducer }) => {
+const mapStateToProps = ({ postsReducer, user }) => {
     return {
-        post: postsReducer.postDetail
+        post: postsReducer.postDetail,
+        signed_in: user.signed_in
     };
 };
 
 const mapActionsToProps = {
-    fetchPostDetails
+    fetchPostDetails, 
+    isLognedIn
 };
 
 export default connect(
